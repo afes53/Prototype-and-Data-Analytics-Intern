@@ -1,0 +1,20 @@
+WITH MedianCTE AS (
+    SELECT 
+        country,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY daily_vaccination) AS MedianVaccination
+    FROM VaccinationTable
+    WHERE daily_vaccination IS NOT NULL
+    GROUP BY country
+),
+
+
+FilledVaccinationTable AS (
+    SELECT 
+        vt.country,
+        vt.date,
+        COALESCE(vt.daily_vaccination, mc.MedianVaccination, 0) AS daily_vaccination
+    FROM VaccinationTable vt
+    LEFT JOIN MedianCTE mc ON vt.country = mc.country
+)
+
+SELECT * FROM FilledVaccinationTable;
