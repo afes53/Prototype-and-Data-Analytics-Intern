@@ -1,0 +1,2 @@
+df = pd.read_csv("/content/country_vaccination_stats.csv")
+df.groupby("country").agg({"daily_vaccinations":"median"}).sort_values(by="daily_vaccinations",ascending=False).head(3)
