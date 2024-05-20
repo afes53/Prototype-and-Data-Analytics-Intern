@@ -1,0 +1,8 @@
+import pandas as pd
+df = pd.read_csv("/content/country_vaccination_stats.csv")
+def fillna_with_min(country):
+  return df[df["country"] == country]["daily_vaccinations"].min()
+
+df.loc[df["daily_vaccinations"].isnull(),"daily_vaccinations"] = df[df["daily_vaccinations"].isnull()].apply(lambda x: fillna_with_min(x["country"]), axis = 1)
+df["daily_vaccinations"] = df["daily_vaccinations"].fillna(0)
+
