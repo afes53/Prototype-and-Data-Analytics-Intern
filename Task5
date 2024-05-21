@@ -1,0 +1,3 @@
+df["Stats_Access_Link"] = df["Stats_Access_Link"].replace("</url>","")
+x = df["Stats_Access_Link"].split("://")
+df["Stats_Access_Link"] = x[1]
