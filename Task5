@@ -1,3 +1,16 @@
-df["Stats_Access_Link"] = df["Stats_Access_Link"].replace("</url>","")
-x = df["Stats_Access_Link"].split("://")
-df["Stats_Access_Link"] = x[1]
+
+# Remove the </url> tag from the column
+df["Stats_Access_Link"] = df["Stats_Access_Link"].str.replace("</url>", "", regex=False)
+
+# Function to extract the part after the protocol
+def extract_access_link(link):
+    # Split on '://', taking the second part
+    parts = link.split("://")
+    # Return the part after the protocol if it exists
+    return parts[1] if len(parts) > 1 else parts[0]
+
+# Apply the extraction function to the column
+df["Stats_Access_Link"] = df["Stats_Access_Link"].apply(extract_access_link)
+
+# Display the DataFrame with the extracted URLs
+print(df)
